@@ -12,8 +12,6 @@
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
-        <link rel="stylesheet" href="css/filter.css">
-<link rel="stylesheet" href="css/nouislider.min.css">
         <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
@@ -43,11 +41,9 @@
         <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="js/leaflet-search.js"></script>
-        <script src="js/tailDT.js"></script>
-<script src="js/nouislider.min.js"></script>
-<script src="js/wNumb.js"></script>
         <script src="data/Merged_Line_Points_1.js"></script>
-        <script src="data/TestPoints_2.js"></script>
+        <script src="data/VAddedPoly_2.js"></script>
+        <script src="data/TestPoints_3.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
@@ -220,7 +216,56 @@
         });
         bounds_group.addLayer(layer_Merged_Line_Points_1);
         map.addLayer(layer_Merged_Line_Points_1);
-        function pop_TestPoints_2(feature, layer) {
+        function pop_VAddedPoly_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_VAddedPoly_2_0() {
+            return {
+                pane: 'pane_VAddedPoly_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,87,45,0.3254901960784314)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_VAddedPoly_2');
+        map.getPane('pane_VAddedPoly_2').style.zIndex = 402;
+        map.getPane('pane_VAddedPoly_2').style['mix-blend-mode'] = 'normal';
+        var layer_VAddedPoly_2 = new L.geoJson(json_VAddedPoly_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_VAddedPoly_2',
+            layerName: 'layer_VAddedPoly_2',
+            pane: 'pane_VAddedPoly_2',
+            onEachFeature: pop_VAddedPoly_2,
+            style: style_VAddedPoly_2_0,
+        });
+        bounds_group.addLayer(layer_VAddedPoly_2);
+        map.addLayer(layer_VAddedPoly_2);
+        function pop_TestPoints_3(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
@@ -237,9 +282,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_TestPoints_2_0() {
+        function style_TestPoints_3_0() {
             return {
-                pane: 'pane_TestPoints_2',
+                pane: 'pane_TestPoints_3',
                 radius: 4.0,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
@@ -253,26 +298,26 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_TestPoints_2');
-        map.getPane('pane_TestPoints_2').style.zIndex = 402;
-        map.getPane('pane_TestPoints_2').style['mix-blend-mode'] = 'normal';
-        var layer_TestPoints_2 = new L.geoJson(json_TestPoints_2, {
+        map.createPane('pane_TestPoints_3');
+        map.getPane('pane_TestPoints_3').style.zIndex = 403;
+        map.getPane('pane_TestPoints_3').style['mix-blend-mode'] = 'normal';
+        var layer_TestPoints_3 = new L.geoJson(json_TestPoints_3, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_TestPoints_2',
-            layerName: 'layer_TestPoints_2',
-            pane: 'pane_TestPoints_2',
-            onEachFeature: pop_TestPoints_2,
+            dataVar: 'json_TestPoints_3',
+            layerName: 'layer_TestPoints_3',
+            pane: 'pane_TestPoints_3',
+            onEachFeature: pop_TestPoints_3,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_TestPoints_2_0(feature));
+                return L.circleMarker(latlng, style_TestPoints_3_0(feature));
             },
         });
-        bounds_group.addLayer(layer_TestPoints_2);
-        map.addLayer(layer_TestPoints_2);
+        bounds_group.addLayer(layer_TestPoints_3);
+        map.addLayer(layer_TestPoints_3);
         var osmGeocoder = new L.Control.Geocoder({
             collapsed: true,
             position: 'topleft',
@@ -285,7 +330,8 @@
         .title += 'Search for a place';
         var baseMaps = {};
         var overlaysTree = [
-            {label: '<img src="legend/TestPoints_2.png" /> Test Points', layer: layer_TestPoints_2},
+            {label: '<img src="legend/TestPoints_3.png" /> Test Points', layer: layer_TestPoints_3},
+            {label: '<img src="legend/VAddedPoly_2.png" /> VAddedPoly', layer: layer_VAddedPoly_2},
             {label: 'Merged_Line_Points<br /><table><tr><td style="text-align: center;"><img src="legend/Merged_Line_Points_1_Amber0.png" /></td><td>Amber</td></tr><tr><td style="text-align: center;"><img src="legend/Merged_Line_Points_1_Green1.png" /></td><td>Green</td></tr><tr><td style="text-align: center;"><img src="legend/Merged_Line_Points_1_Red2.png" /></td><td>Red</td></tr></table>', layer: layer_Merged_Line_Points_1},
             {label: "Google Hybrid", layer: layer_GoogleHybrid_0},]
         var lay = L.control.layers.tree(null, overlaysTree,{
@@ -300,12 +346,12 @@
         lay.addTo(map);
         setBounds();
         var i = 0;
-        layer_TestPoints_2.eachLayer(function(layer) {
+        layer_TestPoints_3.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #f8f127; font-size: 12pt; font-weight: bold; font-family: \'Nirmala UI\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_TestPoints_2'});
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #f8f127; font-size: 12pt; font-weight: bold; font-family: \'Nirmala UI\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_TestPoints_3'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
@@ -313,208 +359,21 @@
               i++;
         });
         map.addControl(new L.Control.Search({
-            layer: layer_TestPoints_2,
+            layer: layer_TestPoints_3,
             initial: false,
             hideMarkerOnCollapse: true,
             propertyName: 'Long'}));
         document.getElementsByClassName('search-button')[0].className +=
          ' fa fa-binoculars';
-        var mapDiv = document.getElementById('map');
-        var row = document.createElement('div');
-        row.className="row";
-        row.id="all";
-        row.style.height = "100%";
-        var col1 = document.createElement('div');
-        col1.className="col9";
-        col1.id = "mapWindow";
-        col1.style.height = "99%";
-        col1.style.width = "80%";
-        col1.style.display = "inline-block";
-        var col2 = document.createElement('div');
-        col2.className="col3";
-        col2.id = "menu";
-        col2.style.display = "inline-block";
-        mapDiv.parentNode.insertBefore(row, mapDiv);
-        document.getElementById("all").appendChild(col1);
-        document.getElementById("all").appendChild(col2);
-        col1.appendChild(mapDiv)
-        var Filters = {"RAG": "str","Cham_Shape": "str"};
-        function filterFunc() {
-          map.eachLayer(function(lyr){
-          if ("options" in lyr && "dataVar" in lyr["options"]){
-            features = this[lyr["options"]["dataVar"]].features.slice(0);
-            try{
-              for (key in Filters){
-                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
-                if (Filters[key] == "str" || Filters[key] == "bool"){
-                  var selection = [];
-                  var options = document.getElementById("sel_" + keyS).options
-                  for (var i=0; i < options.length; i++) {
-                    if (options[i].selected) selection.push(options[i].value);
-                  }
-                    try{
-                      if (key in features[0].properties){
-                        for (i = features.length - 1;
-                          i >= 0; --i){
-                          if (selection.indexOf(
-                          features[i].properties[key])<0
-                          && selection.length>0) {
-                          features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                  }
-                }
-                if (Filters[key] == "int"){
-                  sliderVals =  document.getElementById(
-                    "div_" + keyS).noUiSlider.get();
-                  try{
-                    if (key in features[0].properties){
-                    for (i = features.length - 1; i >= 0; --i){
-                      if (parseInt(features[i].properties[key])
-                          < sliderVals[0]
-                          || parseInt(features[i].properties[key])
-                          > sliderVals[1]){
-                            features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                    }
-                  }
-                if (Filters[key] == "real"){
-                  sliderVals =  document.getElementById(
-                    "div_" + keyS).noUiSlider.get();
-                  try{
-                    if (key in features[0].properties){
-                    for (i = features.length - 1; i >= 0; --i){
-                      if (features[i].properties[key]
-                          < sliderVals[0]
-                          || features[i].properties[key]
-                          > sliderVals[1]){
-                            features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                    }
-                  }
-                if (Filters[key] == "date"
-                  || Filters[key] == "datetime"
-                  || Filters[key] == "time"){
-                  try{
-                    if (key in features[0].properties){
-                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
-                      startdate = document.getElementById("dat_" +
-                        HTMLkey + "_date1").value.replace(" ", "T");
-                      enddate = document.getElementById("dat_" +
-                        HTMLkey + "_date2").value.replace(" ", "T");
-                      for (i = features.length - 1; i >= 0; --i){
-                        if (features[i].properties[key] < startdate
-                          || features[i].properties[key] > enddate){
-                          features.splice(i,1);
-                        }
-                      }
-                    }
-                  } catch(err){
-                  }
-                }
-              }
-            } catch(err){
-            }
-          this[lyr["options"]["layerName"]].clearLayers();
-          this[lyr["options"]["layerName"]].addData(features);
-        var i = 0;
-        layer_TestPoints_2.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #f8f127; font-size: 12pt; font-weight: bold; font-family: \'Nirmala UI\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_TestPoints_2'});
-            labels.push(layer);
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
-        });
-          }
-          })
-        }
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_RAG = document.createElement('div');
-            div_RAG.id = "div_RAG";
-            div_RAG.className= "filterselect";
-            document.getElementById("menu").appendChild(div_RAG);
-            sel_RAG = document.createElement('select');
-            sel_RAG.multiple = true;
-            sel_RAG.size = 3;
-            sel_RAG.id = "sel_RAG";
-            var RAG_options_str = "<option value='' unselected></option>";
-            sel_RAG.onchange = function(){filterFunc()};
-            RAG_options_str  += '<option value="Amber">Amber</option>';
-            RAG_options_str  += '<option value="Green">Green</option>';
-            RAG_options_str  += '<option value="Red">Red</option>';
-            sel_RAG.innerHTML = RAG_options_str;
-            div_RAG.appendChild(sel_RAG);
-            var lab_RAG = document.createElement('div');
-            lab_RAG.innerHTML = 'RAG';
-            lab_RAG.className = 'filterlabel';
-            div_RAG.appendChild(lab_RAG);
-            var reset_RAG = document.createElement('div');
-            reset_RAG.innerHTML = 'clear filter';
-            reset_RAG.className = 'filterlabel';
-            reset_RAG.onclick = function() {
-                var options = document.getElementById("sel_RAG").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_RAG.appendChild(reset_RAG);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_Cham_Shape = document.createElement('div');
-            div_Cham_Shape.id = "div_Cham_Shape";
-            div_Cham_Shape.className= "filterselect";
-            document.getElementById("menu").appendChild(div_Cham_Shape);
-            sel_Cham_Shape = document.createElement('select');
-            sel_Cham_Shape.multiple = true;
-            sel_Cham_Shape.size = 4;
-            sel_Cham_Shape.id = "sel_Cham_Shape";
-            var Cham_Shape_options_str = "<option value='' unselected></option>";
-            sel_Cham_Shape.onchange = function(){filterFunc()};
-            Cham_Shape_options_str  += '<option value="Flat">Flat</option>';
-            Cham_Shape_options_str  += '<option value="Missing">Missing</option>';
-            Cham_Shape_options_str  += '<option value="Round">Round</option>';
-            Cham_Shape_options_str  += '<option value="Square">Square</option>';
-            sel_Cham_Shape.innerHTML = Cham_Shape_options_str;
-            div_Cham_Shape.appendChild(sel_Cham_Shape);
-            var lab_Cham_Shape = document.createElement('div');
-            lab_Cham_Shape.innerHTML = 'Cham_Shape';
-            lab_Cham_Shape.className = 'filterlabel';
-            div_Cham_Shape.appendChild(lab_Cham_Shape);
-            var reset_Cham_Shape = document.createElement('div');
-            reset_Cham_Shape.innerHTML = 'clear filter';
-            reset_Cham_Shape.className = 'filterlabel';
-            reset_Cham_Shape.onclick = function() {
-                var options = document.getElementById("sel_Cham_Shape").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_Cham_Shape.appendChild(reset_Cham_Shape);
-        resetLabels([layer_TestPoints_2]);
+        resetLabels([layer_TestPoints_3]);
         map.on("zoomend", function(){
-            resetLabels([layer_TestPoints_2]);
+            resetLabels([layer_TestPoints_3]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer_TestPoints_2]);
+            resetLabels([layer_TestPoints_3]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer_TestPoints_2]);
+            resetLabels([layer_TestPoints_3]);
         });
         </script>
     </body>
